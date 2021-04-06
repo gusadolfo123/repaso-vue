@@ -1,42 +1,58 @@
 <template>
-  <div class="hello">
+  <div class="container">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <hr />
+    <p>Counter Value: <small-component :counter="counter" /></p>
+    <button @click="decrement(2)">- 1</button>
+    <button @click="reset">Reset</button>
+    <button @click="increment(2)">+ 1</button>
+    <hr />
+    <button @click="show = !show">Show</button>
+    <span> Show/Hide {{ JSON.stringify(show) }} </span>
+    <hr />
+    <div class="result">
+      <h2>Log</h2>
+    </div>
   </div>
 </template>
 
 <script>
+import SmallComponent from "./SmallComponent.vue";
+import HardProcess from "./../helpers/HardProcess.js";
+
 export default {
-  name: 'HelloWorld',
+  components: { SmallComponent },
+  name: "HelloWorld",
+  data: function () {
+    return {
+      counter: 10,
+      show: false,
+      myClass: new HardProcess(),
+    };
+  },
   props: {
-    msg: String
-  }
-}
+    msg: String,
+  },
+  methods: {
+    increment: function (op = 1) {
+      this.counter += op;
+    },
+    decrement: function (op = 1) {
+      this.counter -= op;
+    },
+    reset: function () {
+      this.counter = 10;
+    },
+  },
+  mounted: function () {
+    this.myClass.callProcess(this.counter);
+  },
+  watch: {
+    counter: function (val) {
+      this.myClass.callProcess(val);
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -54,5 +70,17 @@ li {
 }
 a {
   color: #42b983;
+}
+button {
+  margin: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+
+.container {
+  width: 1000px;
+  margin: 0 auto;
 }
 </style>
