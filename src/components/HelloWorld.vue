@@ -2,15 +2,18 @@
   <div class="container">
     <h1>{{ msg }}</h1>
     <hr />
+
     <p>Counter Value: <small-component :counter="counter" /></p>
-    <button @click="decrement(2)">- 1</button>
+    <button @click="() => decrement()">-</button>
     <button @click="reset">Reset</button>
-    <button @click="increment(2)">+ 1</button>
+    <button @click="increment(2)">+</button>
     <hr />
+
     <button @click="show = !show">Show</button>
     <span> Show/Hide {{ JSON.stringify(show) }} </span>
     <hr />
-    <div class="result">
+
+    <div class="result" v-if="show">
       <h2>Log</h2>
     </div>
   </div>
@@ -27,7 +30,7 @@ export default {
     return {
       counter: 10,
       show: false,
-      myClass: new HardProcess(),
+      hardProcess: new HardProcess(),
     };
   },
   props: {
@@ -45,11 +48,11 @@ export default {
     },
   },
   mounted: function () {
-    this.myClass.callProcess(this.counter);
+    this.hardProcess.callProcess(this.counter);
   },
   watch: {
     counter: function (val) {
-      this.myClass.callProcess(val);
+      this.hardProcess.callProcess(val);
     },
   },
 };
